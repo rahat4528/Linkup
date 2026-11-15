@@ -61,7 +61,8 @@ Linkup/
   │   ├── architecture.md
   │   ├── technology-stack.md
   │   ├── development-guide.md
-  │   └── project-index.md
+  │   ├── project-index.md
+  │   └── final-delivery-report.md
   │
   ├── 01-social-media-platform/      # Phase 1: Social Media Platform
   ├── 02-instagram-clone/            # Phase 2: Visual Media Discovery

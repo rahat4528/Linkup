@@ -1,0 +1,8 @@
+{
+  "name": "social-media-platform-e2e-tests",
+  "version": "1.0.0",
+  "description": "Cross-cutting and E2E verification test suite for Social Media Platform",
+  "scripts": {
+    "test": "cd ../backend && npm test"
+  }
+}

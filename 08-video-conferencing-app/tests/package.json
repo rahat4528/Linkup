@@ -1,0 +1,8 @@
+{
+  "name": "video-conferencing-app-tests",
+  "version": "1.0.0",
+  "description": "Cross-cutting test suite runner for Video Conferencing App",
+  "scripts": {
+    "test": "npm test --prefix ../backend"
+  }
+}

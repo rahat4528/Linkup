@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: linkup_email_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: linkup_admin
+      POSTGRES_PASSWORD: linkup_password
+      POSTGRES_DB: linkup_email_client_db
+    ports:
+      - "5436:5432"
+    volumes:
+      - email_postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: linkup_email_redis
+    restart: always
+    ports:
+      - "6383:6379"
+    volumes:
+      - email_redis_data:/data
+
+  greenmail:
+    image: greenmail/standalone:2.1.0
+    container_name: linkup_email_greenmail
+    restart: always
+    ports:
+      - "3025:3025"   # SMTP
+      - "3143:3143"   # IMAP
+    environment:
+      GREENMAIL_OPTS: "-Dgreenmail.setup.all -Dgreenmail.hostname=0.0.0.0 -Dgreenmail.users=testuser:password@linkup.local"
+
+volumes:
+  email_postgres_data:
+  email_redis_data:

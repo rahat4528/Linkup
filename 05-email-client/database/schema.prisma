@@ -1,0 +1,100 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum EmailFolder {
+  INBOX
+  SENT
+  DRAFTS
+  TRASH
+  SPAM
+  ARCHIVE
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  username     String        @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  threads      EmailThread[]
+  labels       EmailLabel[]
+
+  @@map("users")
+}
+
+model EmailThread {
+  id                String                 @id @default(uuid())
+  userId            String
+  normalizedSubject String
+  snippet           String
+  lastMessageAt     DateTime               @default(now())
+  isStarred         Boolean                @default(false)
+  isRead            Boolean                @default(false)
+  folder            EmailFolder            @default(INBOX)
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+
+  user              User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages          EmailMessage[]
+  labelAssignments  EmailLabelAssignment[]
+
+  @@index([userId, folder, lastMessageAt])
+  @@map("email_threads")
+}
+
+model EmailMessage {
+  id          String      @id @default(uuid())
+  threadId    String
+  messageId   String      @unique
+  from        String
+  to          String[]
+  cc          String[]    @default([])
+  bcc         String[]    @default([])
+  subject     String
+  bodyText    String?
+  bodyHtml    String?
+  inReplyTo   String?
+  references  String[]    @default([])
+  isDraft     Boolean     @default(false)
+  date        DateTime    @default(now())
+  createdAt   DateTime    @default(now())
+
+  thread      EmailThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+
+  @@index([threadId, date])
+  @@map("email_messages")
+}
+
+model EmailLabel {
+  id          String                 @id @default(uuid())
+  userId      String
+  name        String
+  color       String                 @default("#3b82f6")
+  createdAt   DateTime               @default(now())
+
+  user        User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignments EmailLabelAssignment[]
+
+  @@unique([userId, name])
+  @@map("email_labels")
+}
+
+model EmailLabelAssignment {
+  id       String      @id @default(uuid())
+  threadId String
+  labelId  String
+
+  thread   EmailThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  label    EmailLabel  @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@unique([threadId, labelId])
+  @@map("email_label_assignments")
+}

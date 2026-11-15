@@ -1,0 +1,8 @@
+{
+  "name": "chat-application-tests",
+  "version": "1.0.0",
+  "description": "Automated E2E and integration test runner for Real-Time Chat Application",
+  "scripts": {
+    "test": "cd ../backend && npm test"
+  }
+}

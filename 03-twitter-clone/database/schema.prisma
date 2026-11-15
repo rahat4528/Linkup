@@ -1,0 +1,262 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum NoteStatus {
+  NEEDS_MORE_RATINGS
+  HELPFUL
+  NOT_HELPFUL
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  username     String    @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  profile      Profile?
+  posts        Post[]
+  reposts      Repost[]
+  quotePosts   QuotePost[]
+  likes        Like[]
+  bookmarks    Bookmark[]
+  pollVotes    PollVote[]
+  notesProposed CommunityNote[]
+  noteRatings  NoteRating[]
+
+  followers    Follow[]   @relation("TwitterFollowers")
+  following    Follow[]   @relation("TwitterFollowing")
+  mutedUsers   Mute[]     @relation("TwitterMuter")
+  mutedBy      Mute[]     @relation("TwitterMuted")
+  blockedUsers Block[]    @relation("TwitterBlocker")
+  blockedBy    Block[]    @relation("TwitterBlocked")
+
+  notifications Notification[]
+}
+
+model Profile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  avatarUrl   String?
+  bannerUrl   String?
+  bio         String?
+  location    String?
+  website     String?
+  pinnedPostId String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Follow {
+  id          String   @id @default(uuid())
+  followerId  String
+  follower    User     @relation("TwitterFollowing", fields: [followerId], references: [id], onDelete: Cascade)
+  followingId String
+  following   User     @relation("TwitterFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
+  @@index([followingId])
+}
+
+model Post {
+  id             String        @id @default(uuid())
+  authorId       String
+  author         User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  text           String
+  conversationId String        // Root post of thread
+  parentId       String?       // Direct parent in thread
+  isDeleted      Boolean       @default(false)
+  isEdited       Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  media          PostMedia[]
+  likes          Like[]
+  reposts        Repost[]
+  quotes         QuotePost[]   @relation("TargetQuote")
+  poll           Poll?
+  communityNotes CommunityNote[]
+  editHistory    PostEdit[]
+
+  @@index([authorId, createdAt])
+  @@index([conversationId, createdAt])
+  @@index([parentId])
+}
+
+model PostMedia {
+  id        String   @id @default(uuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  url       String
+  type      String   // IMAGE, VIDEO
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([postId])
+}
+
+model Repost {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+  @@index([postId])
+}
+
+model QuotePost {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  targetPostId String
+  targetPost   Post     @relation("TargetQuote", fields: [targetPostId], references: [id], onDelete: Cascade)
+  text         String
+  createdAt    DateTime @default(now())
+
+  @@index([targetPostId])
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+  @@index([postId])
+}
+
+model Bookmark {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId    String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+}
+
+model Poll {
+  id        String       @id @default(uuid())
+  postId    String       @unique
+  post      Post         @relation(fields: [postId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime     @default(now())
+
+  options   PollOption[]
+  votes     PollVote[]
+}
+
+model PollOption {
+  id        String     @id @default(uuid())
+  pollId    String
+  poll      Poll       @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  index     Int
+  text      String
+  votesCount Int       @default(0)
+
+  votes     PollVote[]
+
+  @@unique([pollId, index])
+}
+
+model PollVote {
+  id        String     @id @default(uuid())
+  pollId    String
+  poll      Poll       @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  optionId  String
+  option    PollOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+
+  @@unique([pollId, userId])
+}
+
+model CommunityNote {
+  id        String     @id @default(uuid())
+  postId    String
+  post      Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  text      String
+  status    NoteStatus @default(NEEDS_MORE_RATINGS)
+  createdAt DateTime   @default(now())
+
+  ratings   NoteRating[]
+
+  @@index([postId, status])
+}
+
+model NoteRating {
+  id        String        @id @default(uuid())
+  noteId    String
+  note      CommunityNote @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isHelpful Boolean
+  createdAt DateTime      @default(now())
+
+  @@unique([noteId, userId])
+}
+
+model PostEdit {
+  id        String   @id @default(uuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  text      String
+  editedAt  DateTime @default(now())
+
+  @@index([postId])
+}
+
+model Mute {
+  id        String   @id @default(uuid())
+  muterId   String
+  muter     User     @relation("TwitterMuter", fields: [muterId], references: [id], onDelete: Cascade)
+  mutedId   String
+  muted     User     @relation("TwitterMuted", fields: [mutedId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([muterId, mutedId])
+}
+
+model Block {
+  id        String   @id @default(uuid())
+  blockerId String
+  blocker   User     @relation("TwitterBlocker", fields: [blockerId], references: [id], onDelete: Cascade)
+  blockedId String
+  blocked   User     @relation("TwitterBlocked", fields: [blockedId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([blockerId, blockedId])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  actorId   String
+  type      String   // LIKE, REPOST, REPLY, MENTION, FOLLOW
+  targetId  String?
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead])
+}

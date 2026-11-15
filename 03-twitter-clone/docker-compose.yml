@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: linkup_twitter_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: linkup_user
+      POSTGRES_PASSWORD: linkup_secure_password
+      POSTGRES_DB: linkup_twitter_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - twitter_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U linkup_user -d linkup_twitter_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: linkup_twitter_redis
+    restart: unless-stopped
+    ports:
+      - "6381:6379"
+    volumes:
+      - twitter_redis_data:/data
+
+volumes:
+  twitter_postgres_data:
+  twitter_redis_data:

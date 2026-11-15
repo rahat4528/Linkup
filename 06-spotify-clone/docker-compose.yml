@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: linkup_spotify_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: linkup_admin
+      POSTGRES_PASSWORD: linkup_password
+      POSTGRES_DB: linkup_spotify_db
+    ports:
+      - "5437:5432"
+    volumes:
+      - spotify_postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: linkup_spotify_redis
+    restart: always
+    ports:
+      - "6384:6379"
+    volumes:
+      - spotify_redis_data:/data
+
+volumes:
+  spotify_postgres_data:
+  spotify_redis_data:

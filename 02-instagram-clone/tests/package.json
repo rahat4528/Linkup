@@ -1,0 +1,8 @@
+{
+  "name": "instagram-clone-tests",
+  "version": "1.0.0",
+  "description": "Cross-cutting and E2E verification test suite for Visual Media Discovery Platform",
+  "scripts": {
+    "test": "cd ../backend && npm test"
+  }
+}

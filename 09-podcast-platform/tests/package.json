@@ -1,0 +1,8 @@
+{
+  "name": "podcast-platform-tests",
+  "version": "1.0.0",
+  "description": "Cross-cutting and integration test runner for Podcast Platform",
+  "scripts": {
+    "test": "npm test --prefix ../backend"
+  }
+}

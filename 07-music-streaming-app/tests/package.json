@@ -1,0 +1,8 @@
+{
+  "name": "music-streaming-app-tests",
+  "version": "1.0.0",
+  "description": "End-to-end and cross-cutting test runner for Music Streaming App",
+  "scripts": {
+    "test": "npm test --prefix ../backend"
+  }
+}

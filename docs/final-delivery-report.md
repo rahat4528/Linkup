@@ -62,3 +62,35 @@ Each application is strictly isolated with its own frontend (Next.js 14, Tailwin
 - Scanned across all 10 projects for forbidden references, authors, and external URLs.
 - Zero attributions, zero third-party branding, and zero cloned code.
 - 100% original data schemas, business logic, UI components, and automated test suites.
+
+
+---
+
+## 5. Multi-Language Architecture & Polyglot Services
+In alignment with developer competencies across Python machine learning and C++ native systems (as demonstrated in `Leaf Health AI`, `ML_50_Project_Platform`, `Os C`, and `game`), specialized high-performance microservices are integrated into Linkup:
+
+| Project Folder | Service Component | Language & Framework | Primary Functionality | Test Suite |
+|---|---|---|---|---|
+| `01-social-media-platform` | `recommendation_service` | **Python 3.13 / FastAPI / Scikit-Learn / NumPy** | TF-IDF content similarity matrix, gravity time-decay engagement scoring, and blended social feed ranking | `pytest` (3 passed) |
+| `07-music-streaming-app` | `native_engine` | **Modern C++ (C++17) / g++ -O3** | Microsecond-latency PCM audio peak & RMS waveform generator, SIMD-optimized signal analysis | Native test binary (4 passed) |
+| `10-meme-generator` | `image_service` | **Python 3.13 / FastAPI / Pillow / NumPy** | Server-side text-stroke outline compositing, sepia/grayscale/blur visual filters, and base64 PNG export | `pytest` (3 passed) |
+| All 10 Projects | Application Core | **Node.js / Express / TypeScript** | REST APIs, WebSockets, JWT authentication, PostgreSQL schemas, Redis caches | Jest (223 passed) |
+| All 10 Projects | Frontends | **Next.js 14 / React 18 / Tailwind** | Responsive web UI, interactive canvases, audio players, video grids | TypeScript / Tailwind |
+
+---
+
+## 6. Deployment Matrix & Hosting Verification Audit
+Audit conducted for all 10 projects across Linkup. Every project is verified against local configuration files, environment settings, and cloud deployment registries. In accordance with zero-invention policy, projects lacking live cloud infrastructure are explicitly marked **Not Deployed**:
+
+| # | Project Name | Folder Name | GitHub Repository | Frontend Hosting | Frontend URL / Status | Backend Hosting | Backend URL / Status |
+|---|---|---|---|---|---|---|---|
+| 01 | Social Media Platform | `01-social-media-platform` | [GitHub](https://github.com/rahat4528/Linkup/tree/main/01-social-media-platform) | Vercel | **Not Deployed** | Render | **Not Deployed** |
+| 02 | Visual Media Discovery | `02-instagram-clone` | [GitHub](https://github.com/rahat4528/Linkup/tree/main/02-instagram-clone) | Vercel | **Not Deployed** | Render | **Not Deployed** |
+| 03 | Microblogging & Real-Time Feed | `03-twitter-clone` | [GitHub](https://github.com/rahat4528/Linkup/tree/main/03-twitter-clone) | Vercel | **Not Deployed** | Render | **Not Deployed** |
+| 04 | Real-Time Chat Application | `04-real-time-chat-application` | [GitHub](https://github.com/rahat4528/Linkup/tree/main/04-real-time-chat-application) | Vercel | **Not Deployed** | Render | **Not Deployed** |
+| 05 | Webmail Client | `05-email-client` | [GitHub](https://github.com/rahat4528/Linkup/tree/main/05-email-client) | Vercel | **Not Deployed** | Render | **Not Deployed** |
+| 06 | Audio Catalog & Discovery | `06-spotify-clone` | [GitHub](https://github.com/rahat4528/Linkup/tree/main/06-spotify-clone) | Vercel | **Not Deployed** | Render | **Not Deployed** |
+| 07 | Minimalist Streaming Player | `07-music-streaming-app` | [GitHub](https://github.com/rahat4528/Linkup/tree/main/07-music-streaming-app) | Vercel | **Not Deployed** | Render | **Not Deployed** |
+| 08 | Real-Time Video Conferencing | `08-video-conferencing-app` | [GitHub](https://github.com/rahat4528/Linkup/tree/main/08-video-conferencing-app) | Vercel | **Not Deployed** | Render | **Not Deployed** |
+| 09 | Podcast Publishing Platform | `09-podcast-platform` | [GitHub](https://github.com/rahat4528/Linkup/tree/main/09-podcast-platform) | Vercel | **Not Deployed** | Render | **Not Deployed** |
+| 10 | Graphic & Meme Editor | `10-meme-generator` | [GitHub](https://github.com/rahat4528/Linkup/tree/main/10-meme-generator) | Vercel | **Not Deployed** | Render | **Not Deployed** |

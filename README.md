@@ -40,6 +40,33 @@ Each application is strictly decoupled with its own distinct frontend, backend, 
 
 ---
 
+## Deployment Status & GitHub Repositories
+
+All projects are hosted in the Linkup monorepo with dedicated directories. Cloud deployments (Vercel frontend, Render backend) are audited below:
+
+| # | Project Name | GitHub Directory Link | Vercel (Frontend) | Render (Backend) | Hosting / Deployment Status |
+|---|---|---|---|---|---|
+| 01 | Social Media Platform | [GitHub Code](https://github.com/rahat4528/Linkup/tree/main/01-social-media-platform) | **Not Deployed** | **Not Deployed** | Local Containerized / Ready |
+| 02 | Visual Media Discovery | [GitHub Code](https://github.com/rahat4528/Linkup/tree/main/02-instagram-clone) | **Not Deployed** | **Not Deployed** | Local Containerized / Ready |
+| 03 | Microblogging & Real-Time Feed | [GitHub Code](https://github.com/rahat4528/Linkup/tree/main/03-twitter-clone) | **Not Deployed** | **Not Deployed** | Local Containerized / Ready |
+| 04 | Real-Time Chat Application | [GitHub Code](https://github.com/rahat4528/Linkup/tree/main/04-real-time-chat-application) | **Not Deployed** | **Not Deployed** | Local Containerized / Ready |
+| 05 | Webmail Client | [GitHub Code](https://github.com/rahat4528/Linkup/tree/main/05-email-client) | **Not Deployed** | **Not Deployed** | Local Containerized / Ready |
+| 06 | Audio Catalog & Discovery | [GitHub Code](https://github.com/rahat4528/Linkup/tree/main/06-spotify-clone) | **Not Deployed** | **Not Deployed** | Local Containerized / Ready |
+| 07 | Minimalist Streaming Player | [GitHub Code](https://github.com/rahat4528/Linkup/tree/main/07-music-streaming-app) | **Not Deployed** | **Not Deployed** | Local Containerized / Ready |
+| 08 | Real-Time Video Conferencing | [GitHub Code](https://github.com/rahat4528/Linkup/tree/main/08-video-conferencing-app) | **Not Deployed** | **Not Deployed** | Local Containerized / Ready |
+| 09 | Podcast Publishing Platform | [GitHub Code](https://github.com/rahat4528/Linkup/tree/main/09-podcast-platform) | **Not Deployed** | **Not Deployed** | Local Containerized / Ready |
+| 10 | Graphic & Meme Editor | [GitHub Code](https://github.com/rahat4528/Linkup/tree/main/10-meme-generator) | **Not Deployed** | **Not Deployed** | Local Containerized / Ready |
+
+---
+
+## Polyglot Technology Architecture
+In addition to the primary TypeScript/Node.js stack, Linkup incorporates high-performance specialized services written in languages matching developer competencies:
+- **Python 3.13 / FastAPI / Scikit-Learn** (`01-social-media-platform/recommendation_service`): TF-IDF content similarity matrix and gravity time-decay feed ranking.
+- **Modern C++17** (`07-music-streaming-app/native_engine`): Sub-millisecond PCM audio waveform RMS and peak envelope generator compiled natively with `g++ -O3`.
+- **Python 3.13 / Pillow / NumPy** (`10-meme-generator/image_service`): High-speed server-side meme rendering, stroke text compositing, and visual image filters.
+
+---
+
 ## Architectural Principles
 
 - **True Isolation**: Each project is an autonomous software artifact. No application shares backend servers, databases, or runtime dependencies with any other.

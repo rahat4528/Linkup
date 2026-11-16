@@ -47,6 +47,17 @@ services:
     volumes:
       - minio_data:/data
 
+  recommendation-service:
+    build:
+      context: ./recommendation_service
+      dockerfile: Dockerfile
+    container_name: linkup_social_recommender
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - PORT=8001
+
 volumes:
   postgres_data:
   redis_data:

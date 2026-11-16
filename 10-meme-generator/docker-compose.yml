@@ -23,6 +23,17 @@ services:
       - redis_data:/data
     restart: unless-stopped
 
+  image-service:
+    build:
+      context: ./image_service
+      dockerfile: Dockerfile
+    container_name: linkup-meme-generator-dsp
+    ports:
+      - "8002:8002"
+    environment:
+      - PORT=8002
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   redis_data:
